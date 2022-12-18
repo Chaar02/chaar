@@ -1,0 +1,34 @@
+spark.conf.get("spark.sql.autoBroadcastJoinThreshold")
+spark.conf.get("spark.sql.join.preferMergeSortJoin")
+val data1 = Seq(10,20,30,40,10,20,30,50,10,20,30)
+val df1 = data1.toDF("id1")
+val data2 = Seq(10,20,30,40,50)
+val df2 = data2.toDF("id2")
+val dfJoined = df1.join(df2,$"id1"===$"id2")
+dfJoined.queryexecution.executedPlan
+dfJoined.show
+
+leftJoin:
+        val left = Seq((0,"zero"),(2,"two")).toDF("id","left")
+        val right = Seq((0,"zero"),(1,"one"),(3,"three")).toDF("id","right")
+        left.join(right,"id").show
+
+Full Outer Join:
+        left.join(right,Seq("id"),"fullouter").show
+
+Leftanti:
+        left.join(right,Seq("id"),"leftanti").show
+        
+        
+Broadcast Join:
+        val threshold = spark.conf.get("spark.sql.autoBroadcastJoin")
+        threshold /1024 /1024
+        val q = spark.range(100).as("a").join(spark.range(100).as("b)).where($"a.id"===$"b.id")
+        println(q.queryExecution.logical.numberedTreestring)
+        q.explain
+        spark.conf.get("spark.sql.autoBroadcastJoinThreshold")
+        val qBroadcast = sparrk.range(100).as("a").join(Broadcast(spark.range(100).as("b")).where($"a.id"===$"b.id")
+        val qBroadcastLeft = """SELECT */+ Broadcast (lf) */* FROM range(100) lf,range(1000) rt WHERE lf.id = rt.id"""
+        sql(qBroadcastLeft).explain
+        val qBroadcastright = """SELECT */+ MapJoin (rt) */* FROM range(100) lf,range(1000) rt WHERE lf.id = rt.id"""     
+        sql(qBroadcastright).explain

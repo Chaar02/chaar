@@ -21,14 +21,14 @@ Leftanti:
         
         
 Broadcast Join:
-        val threshold = spark.conf.get("spark.sql.autoBroadcastJoin")
-        threshold /1024 /1024
-        val q = spark.range(100).as("a").join(spark.range(100).as("b)).where($"a.id"===$"b.id")
-        println(q.queryExecution.logical.numberedTreestring)
-        q.explain
-        spark.conf.get("spark.sql.autoBroadcastJoinThreshold")
-        val qBroadcast = sparrk.range(100).as("a").join(Broadcast(spark.range(100).as("b")).where($"a.id"===$"b.id")
-        val qBroadcastLeft = """SELECT */+ Broadcast (lf) */* FROM range(100) lf,range(1000) rt WHERE lf.id = rt.id"""
-        sql(qBroadcastLeft).explain
-        val qBroadcastright = """SELECT */+ MapJoin (rt) */* FROM range(100) lf,range(1000) rt WHERE lf.id = rt.id"""     
-        sql(qBroadcastright).explain
+        val threshold = spark.conf.get("spark.sql.autoBroadcastJoinThreshold")
+threshold /1024 /1024
+val q = spark.range(100).as("a").join(spark.range(100).as("b")).where($"a.id"===$"b.id")
+println(q.queryExecution.logical.numberedTreeString)
+q.explain
+spark.conf.get("spark.sql.autoBroadcastJoinThreshold")
+val qBroadcast = spark.range(100).as("a").join(Broadcast(spark.range(100).as("b"))).where($"a.id"===$"b.id")
+val qBroadcastleft = """SELECT /*+ Broadcast (lf) */* FROM range(100) lf, range(1000) rt WHERE lf.id = rt.id"""
+sql(qBroadcastleft).explain
+val qBroadcastright = """SELECT /*+ MapJoin (rt) */* FROM range(100) LF, range(1000) rt WHERE lf.if = rt.id"""
+sql(qBroadcastright).explain

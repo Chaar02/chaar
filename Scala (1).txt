@@ -1,5 +1,5 @@
 spark.conf.get("spark.sql.autoBroadcastJoinThreshold")
-spark.conf.get("spark.sql.join.preferMergeSortJoin")
+spark.conf.get("spark.sql.join.preferSortMergeJoin")
 val data1 = Seq(10,20,30,40,10,20,30,50,10,20,30)
 val df1 = data1.toDF("id1")
 val data2 = Seq(10,20,30,40,50)
